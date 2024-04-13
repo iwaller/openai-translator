@@ -1347,6 +1347,7 @@ function ProviderSelector({ value, onChange, hasPromotion }: IProviderSelectorPr
               { label: 'Moonshot', id: 'Moonshot' },
               { label: 'Groq', id: 'Groq' },
               { label: 'Claude', id: 'Claude' },
+              { label: 'Baidu', id: 'Baidu' },
           ] as {
               label: string
               id: Provider
@@ -1360,6 +1361,7 @@ function ProviderSelector({ value, onChange, hasPromotion }: IProviderSelectorPr
               { label: 'Moonshot', id: 'Moonshot' },
               { label: 'Groq', id: 'Groq' },
               { label: 'Claude', id: 'Claude' },
+              { label: 'Baidu', id: 'Baidu' },
           ] as {
               label: string
               id: Provider
@@ -2230,6 +2232,41 @@ export function InnerSettings({
                                 caption={t('Generally, there is no need to modify this item.')}
                             >
                                 <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                        </div>
+                       <div
+                            style={{
+                                display: values.provider === 'Baidu' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem name='baiduClientId' 
+                                label={t('API Key')} 
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            千帆大模型平台
+                                        </a>{' '}
+                                        {t('to get your API Key.')}
+                                    </div>
+                                }
+                                required={values.provider === 'Baidu'}>
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem name='baiduClientSecret' label={t('Secret Key')} required={values.provider === 'Baidu'}>
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='baiduAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'Baidu'}
+                            >
+                                <APIModelSelector provider='Baidu' currentProvider={values.provider} onBlur={onBlur} />
                             </FormItem>
                         </div>
                         <div

@@ -32,7 +32,7 @@ interface BaseTranslateQuery {
     action: Action
     onMessage: (message: { content: string; role: string; isWordMode: boolean; isFullText?: boolean }) => Promise<void>
     onError: (error: string) => void
-    onFinish: (reason: string) => void
+    onFinish: (reason: string, isWordMode?: boolean) => void
     onStatusCode?: (statusCode: number) => void
     signal: AbortSignal
 }
@@ -409,7 +409,7 @@ If you understand, say "yes", and then we will begin.`
             await query.onMessage({ ...message, isWordMode })
         },
         onFinished: (reason) => {
-            query.onFinish(reason)
+            query.onFinish(reason, isWordMode)
         },
         onError: (error) => {
             query.onError(error)

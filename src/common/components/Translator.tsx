@@ -42,9 +42,10 @@ import rocket from '../assets/images/rocket.gif'
 import partyPopper from '../assets/images/party-popper.gif'
 import { listen, Event } from '@tauri-apps/api/event'
 import IpLocationNotification from '../components/IpLocationNotification'
+import CambridgeDictionary from '../components/CambridgeDictionary'
 import { HighlightInTextarea } from '../highlight-in-textarea'
 import { LRUCache } from 'lru-cache'
-import { ISettings, IThemedStyleProps } from '../types'
+import { ISettings, IThemedStyleProps, CacheValue } from '../types'
 import { useTheme } from '../hooks/useTheme'
 import { Tooltip } from './Tooltip'
 import { useSettings } from '../hooks/useSettings'
@@ -88,7 +89,7 @@ import { usePromotionShowed } from '../hooks/usePromotionShowed'
 import { SpeakerIcon } from './SpeakerIcon'
 import { Provider, engineIcons, getEngine } from '../engines'
 
-const cache = new LRUCache({
+const cache = new LRUCache<string, CacheValue>({
     max: 500,
     maxSize: 5000,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -1090,7 +1091,8 @@ function InnerTranslator(props: IInnerTranslatorProps) {
             const cachedValue = cache.get(cachedKey)
             if (cachedValue) {
                 afterTranslate('stop')
-                setTranslatedText(cachedValue as string)
+                setIsWordMode(cachedValue.isWordMode)
+                setTranslatedText(cachedValue.result as string)
                 return
             }
             let isStopped = false
@@ -1118,11 +1120,14 @@ function InnerTranslator(props: IInnerTranslatorProps) {
                             return translatedText + message.content
                         })
                     },
-                    onFinish: (reason) => {
+                    onFinish: (reason, isWordMode) => {
                         afterTranslate(reason)
                         setTranslatedText((translatedText) => {
                             const result = translatedText
-                            cache.set(cachedKey, result)
+                            cache.set(cachedKey, {
+                                result,
+                                isWordMode: isWordMode ?? false
+                            })
                             return result
                         })
                     },
@@ -2097,6 +2102,7 @@ function InnerTranslator(props: IInnerTranslatorProps) {
                                                         return (
                                                             <div className={styles.paragraph} key={`p-${i}`}>
                                                                 {isWordMode && i === 0 ? (
+                                                                    <>
                                                                     <div
                                                                         style={{
                                                                             display: 'flex',
@@ -2132,6 +2138,11 @@ function InnerTranslator(props: IInnerTranslatorProps) {
                                                                             </StatefulTooltip>
                                                                         )}
                                                                     </div>
+
+                                                                    {
+                                                                        <CambridgeDictionary word={line} />
+                                                                    }
+                                                                    </>
                                                                 ) : (
                                                                     line
                                                                 )}

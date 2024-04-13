@@ -6,6 +6,7 @@ import { IEngine } from './interfaces'
 import { MiniMax } from './minimax'
 import { Moonshot } from './moonshot'
 import { OpenAI } from './openai'
+import {Baidu} from './baidu'
 import { IconType } from 'react-icons'
 import { VscAzureDevops } from 'react-icons/vsc'
 import { FaGoogle } from 'react-icons/fa'
@@ -14,11 +15,12 @@ import { Ollama } from './ollama'
 import { OllamaIcon } from '@/common/components/icons/OllamaIcon'
 import { MoonshotIcon } from '@/common/components/icons/MoonshotIcon'
 import { ClaudeIcon } from '@/common/components/icons/ClaudeIcon'
+import {BaiduIcon} from '@/common/components/icons/BaiduIcon'
 import { Groq } from './groq'
 import { GroqIcon } from '@/common/components/icons/GroqIcon'
 import { Claude } from './claude'
 
-export type Provider = 'OpenAI' | 'ChatGPT' | 'Azure' | 'MiniMax' | 'Moonshot' | 'Gemini' | 'Ollama' | 'Groq' | 'Claude'
+export type Provider = 'OpenAI' | 'ChatGPT' | 'Azure' | 'MiniMax' | 'Moonshot' | 'Gemini' | 'Ollama' | 'Groq' | 'Claude' | 'Baidu'
 
 export const engineIcons: Record<Provider, IconType> = {
     OpenAI: RiOpenaiFill,
@@ -30,6 +32,7 @@ export const engineIcons: Record<Provider, IconType> = {
     Ollama: OllamaIcon,
     Groq: GroqIcon,
     Claude: ClaudeIcon,
+    Baidu: BaiduIcon,
 }
 
 export const providerToEngine: Record<Provider, { new (): IEngine }> = {
@@ -42,6 +45,7 @@ export const providerToEngine: Record<Provider, { new (): IEngine }> = {
     Ollama: Ollama,
     Groq: Groq,
     Claude: Claude,
+    Baidu: Baidu,
 }
 
 export function getEngine(provider: Provider): IEngine {

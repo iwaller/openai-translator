@@ -64,6 +64,11 @@ export interface ISettings {
     miniMaxGroupID: string
     miniMaxAPIKey: string
     miniMaxAPIModel: string
+    baiduClientId: string
+    baiduClientSecret: string
+    baiduAccessToken: string
+    baiduAccessTokenExpiresAt: number
+    baiduAPIModel: string
     geminiAPIURL: string
     geminiAPIKey: string
     geminiAPIModel: string
@@ -126,4 +131,9 @@ export interface ISettings {
     claudeAPIModel: string
     claudeAPIKey: string
     claudeCustomModelName: string
+}
+
+export interface CacheValue {
+    isWordMode: boolean
+    result: string
 }
